@@ -17,8 +17,8 @@ class Window:
             title.encode("ASCII"), 
             SDL_WINDOWPOS_CENTERED,
             SDL_WINDOWPOS_CENTERED, 
-            width * cf.SCALE,
-            height * cf.SCALE, 0
+            int(width * cf.SCALE),
+            int(height * cf.SCALE), 0
         )
         self.renderer = Renderer(self.__width, self.__height, self.__window) 
 

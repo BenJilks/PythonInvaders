@@ -90,7 +90,7 @@ class ParrotHandler(GameObject):
         self.__parrots = []
         
         p_width = 30 * 5
-        start = width / 2 - p_width
+        start = width / 2 - p_width/2
         for i in range(5):
             for j in range(4):
                 parrot = Parrot(sprite, start + i * 30, 10 + j * 30)
@@ -104,7 +104,7 @@ class ParrotHandler(GameObject):
     
     def Update(self, delta):
         # Update position offsets
-        self.__tick += delta
+        self.__tick += delta * 0.05
         self.__offset_x = math.sin(self.__tick) * MAX_OFFSET
         self.__offset_y = self.__tick / APPROACH_RATE
 
