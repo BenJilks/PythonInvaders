@@ -50,7 +50,7 @@ class Renderer:
             ytemp += 1
 
     def Prepare(self):
-        ##ctypes.memset(self.__pixels, 0, self.__size)
+        ctypes.memset(self.__pixels, 0, self.__size)
         pass
 
     def Update(self):
