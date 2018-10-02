@@ -1,6 +1,13 @@
 from sdl2 import *
 import ctypes
 import Config as cf
+
+class Sprite:
+    def __init__(self, pixels, width, height):
+        self.pixels = pixels
+        self.width = width
+        self.height = height
+
 ##Handles drawing to pixel array
 class Renderer:
     def __init__(self, width, height, sdlWindow):
@@ -12,17 +19,15 @@ class Renderer:
 
         ##Set Default Renderer Colour
         SDL_SetRenderDrawColor(self.__renderer,0,0,0,255)
-        size = width * height
         self.__pixels = (ctypes.c_char * (width * height * 4))()
 
-    def GetRenderer(self):
-        return self.__renderer
+    # Load an image into and array of pixels and returns sprite
+    def LoadSprite(self, file_path):
+        pass
 
-    def GetTexture(self):
-        return self.__texture
-
-    def GetPixels(self):
-        return self.__pixels
+    # Draw a sprite at position
+    def DrawSprite(self, sprite, pos):
+        pass
 
     def Update(self):
         # Update screen
