@@ -25,7 +25,6 @@ class Renderer:
 
     # Load an image into and array of pixels and returns sprite
     def LoadSprite(self, file_path):
-        print("called")
         img = Image.open(file_path)
         raw_pixels = list(img.getdata())
 
@@ -41,18 +40,14 @@ class Renderer:
 
     # Draw a sprite at position
     def DrawSprite(self, sprite, pos):
-        for i in range(sprite.height):
-            start = int(pos[0]) + (i + int(pos[1])) * self.__width * 4
-            end = start + sprite.width * 4
-            for j in range(start, end):
-                self.__pixels[j] = sprite.pixels[i * sprite.width * 4 + j]
+        pass
 
     def Prepare(self):
         ctypes.memset(self.__pixels, 0, self.__size)
 
     def Update(self):
         ##Clear the screen
-        self.Prepare() ##fucc python method calls
+        self.Prepare()
 
         # Update screen
         SDL_UpdateTexture(
@@ -68,11 +63,9 @@ class Renderer:
             None
         )
         SDL_RenderPresent(self.__renderer)
-        ##SDL_Delay(0)
         SDL_RenderClear(self.__renderer) 
 
     def SetPixel(self, x, y, r, g, b):
-        ##it works screw it
         index = (x*4) + (y*self.__width*4)
         self.__pixels[index] = ctypes.c_char(r)
         self.__pixels[index+1] = ctypes.c_char(g)
