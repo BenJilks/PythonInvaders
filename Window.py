@@ -36,10 +36,10 @@ class Window:
                 self.Close()
         
         # Update screen
-        self.renderer.Update()
         for obj in self.__objects:
             obj.Render(self.renderer)
             obj.Update(0.1)
+        self.renderer.Update()
     
     def IsRunning(self):
         return not self.__should_close
