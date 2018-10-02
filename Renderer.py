@@ -16,11 +16,18 @@ class Renderer:
         ##SDL2 renderer and texture (OpenGL graphics)
         self.__width = width
         self.__height = height
-        self.__renderer = SDL_CreateRenderer(sdlWindow, -1, 
-            SDL_RENDERER_ACCELERATED, SDL_RENDERER_PRESENTVSYNC)
-        self.__texture = SDL_CreateTexture(self.__renderer, 
-            SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_STREAMING, 
-            int(width), int(height))
+        self.__renderer = SDL_CreateRenderer(
+            sdlWindow, -1, 
+            SDL_RENDERER_ACCELERATED, 
+            SDL_RENDERER_PRESENTVSYNC
+        )
+
+        self.__texture = SDL_CreateTexture(
+            self.__renderer, 
+            SDL_PIXELFORMAT_RGB888,
+            SDL_TEXTUREACCESS_STREAMING, 
+            int(width), int(height)
+        )
 
         ##Set Default Renderer Colour
         SDL_SetRenderDrawColor(self.__renderer,0,0,0,255)
@@ -30,7 +37,8 @@ class Renderer:
     # Load an image into and array of pixels and returns sprite
     def LoadSprite(self, file_path):
         img = Image.open(file_path)
-        ##Convert to proper form
+
+        ##Convert image to usable form
         im = img.convert("RGBA")
         return Sprite(img.width, img.height, img)
 
@@ -44,7 +52,7 @@ class Renderer:
         xtemp = 0
         ytemp = 0
 
-        for i in range(int(ymin),int(ymax)):
+        for i in range(int(ymin),int(ymax)-1):
             xtemp = 0
             for j in range(int(xmin), int(xmax)):
                 r,g,b,a = sprite.img.getpixel((xtemp, ytemp))

@@ -35,7 +35,6 @@ class Player(GameObject):
         elif self.__dir == DIR_RIGHT:
             self.pos[0] += cf.PLAYER_SPEED * delta
 
-
     def OnEvent(self, event):
         key = event.key.keysym.sym
         if event.type == SDL_KEYDOWN:
@@ -61,7 +60,7 @@ class Player(GameObject):
         return False
 
 MAX_OFFSET = 20
-APPROACH_RATE = 20
+APPROACH_RATE = 0.7
 
 # Parrot - enemy object
 class Parrot(GameObject):

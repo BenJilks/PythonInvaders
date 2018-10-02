@@ -3,8 +3,8 @@ from Window import Window
 from random import randint
 from GameObjects import Player, ParrotHandler
 
-WIDTH = 400
-HEIGHT = 400
+WIDTH = 450
+HEIGHT = 300
 
 def main():
     window = Window(WIDTH, HEIGHT, "Python Invaders")
