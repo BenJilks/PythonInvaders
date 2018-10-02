@@ -4,10 +4,11 @@ import Config as cf
 from PIL import Image
 
 class Sprite:
-    def __init__(self, pixels, width, height):
-        self.pixels = pixels
+    def __init__(self, width, height, img):
+        ##self.pixels = pixels ##Pointless for now
         self.width = width
         self.height = height
+        self.img = img
 
 ##Handles drawing to pixel array
 class Renderer:
@@ -25,34 +26,36 @@ class Renderer:
 
     # Load an image into and array of pixels and returns sprite
     def LoadSprite(self, file_path):
-        print("called")
         img = Image.open(file_path)
-        raw_pixels = list(img.getdata())
-
-        img_size = img.width * img.height * 4
-        pixels = (ctypes.c_char * img_size)()
-        for i in range(len(raw_pixels)):
-            pixel = raw_pixels[i]
-            pixels[i * 4 + 0] = pixel[0]
-            pixels[i * 4 + 1] = pixel[1]
-            pixels[i * 4 + 2] = pixel[2]
-            pixels[i * 4 + 3] = pixel[3]
-        return Sprite(pixels, img.width, img.height)
+        ##Convert to proper form
+        im = img.convert("RGB")
+        return Sprite(img.width, img.height, im)
 
     # Draw a sprite at position
     def DrawSprite(self, sprite, pos):
-        for i in range(sprite.height):
-            start = int(pos[0]) + (i + int(pos[1])) * self.__width * 4
-            end = start + sprite.width * 4
-            for j in range(start, end):
-                self.__pixels[j] = sprite.pixels[i * sprite.width * 4 + j]
+        xmin = pos[0]
+        ymin = pos[1]
+        xmax = xmin + sprite.width
+        ymax = ymin + sprite.height
+
+        xtemp = 0
+        ytemp = 0
+
+        for i in range(int(ymin),int(ymax)):
+            xtemp = 0
+            for j in range(int(xmin), int(xmax)):
+                r,g,b = sprite.img.getpixel((xtemp, ytemp))
+                self.SetPixel(j, i, r, g, b)
+                xtemp += 1
+            ytemp += 1
 
     def Prepare(self):
-        ctypes.memset(self.__pixels, 0, self.__size)
+        ##ctypes.memset(self.__pixels, 0, self.__size)
+        pass
 
     def Update(self):
         ##Clear the screen
-        self.Prepare() ##fucc python method calls
+        
 
         # Update screen
         SDL_UpdateTexture(
@@ -68,8 +71,9 @@ class Renderer:
             None
         )
         SDL_RenderPresent(self.__renderer)
-        ##SDL_Delay(0)
+        ##SDL_Delay(1)
         SDL_RenderClear(self.__renderer) 
+        self.Prepare() ##fucc python method calls
 
     def SetPixel(self, x, y, r, g, b):
         ##it works screw it

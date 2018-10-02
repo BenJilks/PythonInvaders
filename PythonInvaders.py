@@ -7,7 +7,6 @@ WIDTH = 400
 HEIGHT = 400
 
 def main():
-    print("here")
     window = Window(WIDTH, HEIGHT, "Python Invaders")
     renderer = window.renderer
 

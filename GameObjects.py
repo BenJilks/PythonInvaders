@@ -20,7 +20,7 @@ DIR_STOP = -1
 # The players object
 class Player(GameObject):
     def __init__(self, sprite, width, height):
-        super().__init__(width / 2 - 5, height - 15)
+        super().__init__(width/2 - 5, height - 50)
         self.__sprite = sprite
         self.__dir = DIR_STOP
     
@@ -60,7 +60,7 @@ class Parrot(GameObject):
         pos = self._pos + offset
         renderer.DrawSprite(self.__sprite, self._pos)
 
-# Handles all parrets in sceene
+# Handles all parrots in scene
 class ParrotHandler(GameObject):
     def __init__(self, sprite, width, height):
         super().__init__(0, 0)
