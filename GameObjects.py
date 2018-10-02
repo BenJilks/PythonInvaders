@@ -20,24 +20,27 @@ DIR_STOP = -1
 # The players object
 class Player(GameObject):
     def __init__(self, sprite, width, height):
-        super().__init__(width/2 - 5, height - 50)
+        super().__init__(width/2, height - 50)
         self.__sprite = sprite
         self.__dir = DIR_STOP
         self.__should_fire = False
+        self.__moveKeyDown = None
     
     def Render(self, renderer):
         renderer.DrawSprite(self.__sprite, self.pos)
     
     def Update(self, delta):
         if self.__dir == DIR_LEFT:
-            self.pos[0] += cf.PLAYER_SPEED * delta
-        elif self.__dir == DIR_RIGHT:
             self.pos[0] -= cf.PLAYER_SPEED * delta
-    
+        elif self.__dir == DIR_RIGHT:
+            self.pos[0] += cf.PLAYER_SPEED * delta
+
+
     def OnEvent(self, event):
         key = event.key.keysym.sym
         if event.type == SDL_KEYDOWN:
             # Set the move direction based on the key pressed
+            self.__moveKeyDown = key
             if key == cf.KEY_LEFT:
                 self.__dir = DIR_LEFT
             elif key == cf.KEY_RIGHT:
@@ -46,10 +49,10 @@ class Player(GameObject):
                 self.__should_fire = True
 
         elif event.type == SDL_KEYUP:
-            # If a movement key is released, then stop movement
-            if key in cf.MOVEMENT_KEYS:
-                self.__dir == DIR_STOP
-    
+            if key == self.__moveKeyDown:
+                self.__dir = DIR_STOP
+        
+
     def ShouldFire(self):
         if self.__should_fire:
             self.__should_fire = False
@@ -59,7 +62,7 @@ class Player(GameObject):
 MAX_OFFSET = 20
 APPROACH_RATE = 20
 
-# Parot, enmie object
+# Parrot - enemy object
 class Parrot(GameObject):
     def __init__(self, sprite, x, y):
         super().__init__(x, y)

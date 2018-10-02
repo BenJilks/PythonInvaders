@@ -37,8 +37,8 @@ class Window:
         
         # Update screen
         for obj in self.__objects:
-            obj.Render(self.renderer)
             obj.Update(0.1)
+            obj.Render(self.renderer)
         self.renderer.Update()
     
     def IsRunning(self):

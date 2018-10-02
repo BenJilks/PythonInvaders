@@ -54,9 +54,6 @@ class Renderer:
         pass
 
     def Update(self):
-        ##Clear the screen
-        
-
         # Update screen
         SDL_UpdateTexture(
             self.__texture, 
@@ -72,6 +69,7 @@ class Renderer:
         )
         SDL_RenderPresent(self.__renderer)
         ##SDL_Delay(1)
+        ##Clear the screen
         SDL_RenderClear(self.__renderer) 
         self.Prepare() ##fucc python method calls
 

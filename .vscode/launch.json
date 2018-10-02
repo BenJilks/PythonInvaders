@@ -8,7 +8,7 @@
             "name": "Game Debug",
             "type": "python",
             "request": "launch",
-            "program": "PythonInvaders.py",
+            "program": "${workspaceFolder}/PythonInvaders.py",
             "console": "integratedTerminal"
         }
     ]
