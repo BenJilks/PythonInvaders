@@ -3,8 +3,8 @@ from Window import Window
 from random import randint
 from GameObjects import Player, ParrotHandler
 
-WIDTH = 400
-HEIGHT = 400
+WIDTH = 400/2
+HEIGHT = 400/2
 
 def main():
     window = Window(WIDTH, HEIGHT, "Python Invaders")
@@ -27,11 +27,10 @@ def main():
         
         bullets_hit = []
         for bullet in bullets:
-            bullet[1] -= 0.01
+            bullet[1] -= 10
             if parrots.TestCollision(bullet[0], bullet[1]) or bullet[1] <= 0:
                 bullets_hit.append(bullet)
             else:
-                print(int(bullet[0]), int(bullet[1]))
                 renderer.SetPixel(int(bullet[0]), int(bullet[1]), 0, 255, 0)
         
         for bullet in bullets_hit:

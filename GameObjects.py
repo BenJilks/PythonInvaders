@@ -20,7 +20,7 @@ DIR_STOP = -1
 # The players object
 class Player(GameObject):
     def __init__(self, sprite, width, height):
-        super().__init__(width/2 - 5, height - 50)
+        super().__init__(width/2 - 5, height - 30)
         self.__sprite = sprite
         self.__dir = DIR_STOP
         self.__should_fire = False
@@ -30,9 +30,9 @@ class Player(GameObject):
     
     def Update(self, delta):
         if self.__dir == DIR_LEFT:
-            self.pos[0] += cf.PLAYER_SPEED * delta
-        elif self.__dir == DIR_RIGHT:
             self.pos[0] -= cf.PLAYER_SPEED * delta
+        elif self.__dir == DIR_RIGHT:
+            self.pos[0] += cf.PLAYER_SPEED * delta
     
     def OnEvent(self, event):
         key = event.key.keysym.sym
@@ -48,7 +48,7 @@ class Player(GameObject):
         elif event.type == SDL_KEYUP:
             # If a movement key is released, then stop movement
             if key in cf.MOVEMENT_KEYS:
-                self.__dir == DIR_STOP
+                self.__dir = DIR_STOP
     
     def ShouldFire(self):
         if self.__should_fire:
@@ -87,7 +87,7 @@ class ParrotHandler(GameObject):
         self.__parrots = []
         
         p_width = 30 * 5
-        start = width / 2 - p_width
+        start = width / 2 - p_width/2
         for i in range(5):
             for j in range(4):
                 parrot = Parrot(sprite, start + i * 30, 10 + j * 30)
@@ -101,7 +101,7 @@ class ParrotHandler(GameObject):
     
     def Update(self, delta):
         # Update position offsets
-        self.__tick += delta
+        self.__tick += delta * 0.05
         self.__offset_x = math.sin(self.__tick) * MAX_OFFSET
         self.__offset_y = self.__tick / APPROACH_RATE
 
