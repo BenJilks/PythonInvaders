@@ -40,16 +40,17 @@ class Player(GameObject):
         key = event.key.keysym.sym
         if event.type == SDL_KEYDOWN:
             # Set the move direction based on the key pressed
-            self.__moveKeyDown = key
             if key == cf.KEY_LEFT:
+                self.__moveKeyDown = key
                 self.__dir = DIR_LEFT
             elif key == cf.KEY_RIGHT:
+                self.__moveKeyDown = key
                 self.__dir = DIR_RIGHT
             elif key == cf.KEY_FIRE:
                 self.__should_fire = True
 
         elif event.type == SDL_KEYUP:
-            if key == self.__moveKeyDown:
+            if key == self.__moveKeyDown and key in cf.MOVEMENT_KEYS:
                 self.__dir = DIR_STOP
         
 

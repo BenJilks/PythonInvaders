@@ -37,7 +37,7 @@ class Window:
         
         # Update screen
         for obj in self.__objects:
-            obj.Update(0.1)
+            obj.Update(1)
             obj.Render(self.renderer)
         self.renderer.Update()
     
