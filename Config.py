@@ -7,4 +7,4 @@ MOVEMENT_KEYS = [KEY_LEFT, KEY_RIGHT]
 
 # Game settings
 PLAYER_SPEED = 1
-SCALE = 10
+SCALE = 2

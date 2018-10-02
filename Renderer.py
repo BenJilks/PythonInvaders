@@ -52,3 +52,6 @@ class Renderer:
         self.__pixels[index] = ctypes.c_char(r)
         self.__pixels[index+1] = ctypes.c_char(g)
         self.__pixels[index+2] = ctypes.c_char(b)
+
+    def FillColour(self, shade):
+        ctypes.memset(self.__pixels, shade, len(self.__pixels))
