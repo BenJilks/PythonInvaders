@@ -76,7 +76,6 @@ class Renderer:
         self.Prepare() ##fucc python method calls
 
     def SetPixel(self, x, y, r, g, b):
-        ##it works screw it
         index = (x*4) + (y*self.__width*4)
         self.__pixels[index] = ctypes.c_char(r)
         self.__pixels[index+1] = ctypes.c_char(g)

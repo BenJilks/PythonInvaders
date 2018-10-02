@@ -9,6 +9,7 @@ class Window:
         self.__height = height
         self.__title = title
         self.__should_close = False
+        self.__objects = []
 
         # Init SDL, create window and renderer
         SDL_Init(SDL_INIT_EVERYTHING)
@@ -21,15 +22,24 @@ class Window:
         )
         self.renderer = Renderer(self.__width, self.__height, self.__window) 
 
+    def AddObject(self, obj):
+        self.__objects.append(obj)
+
     def Update(self):
         # Handle SDL events
         event = SDL_Event()
         while SDL_PollEvent(event):
+            for obj in self.__objects:
+                obj.OnEvent(event)
+            
             if event.type == SDL_QUIT:
                 self.Close()
         
         # Update screen
-        self.renderer.Update()   
+        for obj in self.__objects:
+            obj.Render(self.renderer)
+            obj.Update(0.1)
+        self.renderer.Update()
     
     def IsRunning(self):
         return not self.__should_close

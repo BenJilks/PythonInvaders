@@ -6,7 +6,7 @@ import math
 # Base class for all game objects, contains a position
 class GameObject:
     def __init__(self, x, y):
-        self._pos = np.array([x, y])
+        self.pos = np.array([x, y])
     
     def Render(self, renderer): pass
     def Update(self, delta): pass
@@ -23,29 +23,38 @@ class Player(GameObject):
         super().__init__(width/2 - 5, height - 50)
         self.__sprite = sprite
         self.__dir = DIR_STOP
+        self.__should_fire = False
     
     def Render(self, renderer):
-        renderer.DrawSprite(self.__sprite, self._pos)
+        renderer.DrawSprite(self.__sprite, self.pos)
     
     def Update(self, delta):
         if self.__dir == DIR_LEFT:
-            self._pos[0] += cf.PLAYER_SPEED * delta
+            self.pos[0] += cf.PLAYER_SPEED * delta
         elif self.__dir == DIR_RIGHT:
-            self._pos[0] -= cf.PLAYER_SPEED * delta
+            self.pos[0] -= cf.PLAYER_SPEED * delta
     
     def OnEvent(self, event):
-        key = event.key.keysys.sym
+        key = event.key.keysym.sym
         if event.type == SDL_KEYDOWN:
             # Set the move direction based on the key pressed
             if key == cf.KEY_LEFT:
                 self.__dir = DIR_LEFT
             elif key == cf.KEY_RIGHT:
                 self.__dir = DIR_RIGHT
+            elif key == cf.KEY_FIRE:
+                self.__should_fire = True
 
         elif event.type == SDL_KEYUP:
             # If a movement key is released, then stop movement
             if key in cf.MOVEMENT_KEYS:
-                self._dir == DIR_STOP
+                self.__dir == DIR_STOP
+    
+    def ShouldFire(self):
+        if self.__should_fire:
+            self.__should_fire = False
+            return True
+        return False
 
 MAX_OFFSET = 20
 APPROACH_RATE = 20
@@ -57,8 +66,14 @@ class Parrot(GameObject):
         self.__sprite = sprite
     
     def Render(self, renderer, offset):
-        pos = self._pos + offset
-        renderer.DrawSprite(self.__sprite, self._pos)
+        pos = self.pos + offset
+        renderer.DrawSprite(self.__sprite, pos)
+    
+    def TestCollision(self, bullet_x, bullet_y):
+        if bullet_x > self.pos[0] and bullet_x < self.pos[0] + 20 and \
+            bullet_y > self.pos[1] and bullet_y < self.pos[1] + 20:
+            return True
+        return False
 
 # Handles all parrots in scene
 class ParrotHandler(GameObject):
@@ -70,9 +85,13 @@ class ParrotHandler(GameObject):
 
         # Create parrots in a grid
         self.__parrots = []
+        
+        p_width = 30 * 5
+        start = width / 2 - p_width
         for i in range(5):
-            parrot = Parrot(sprite, i * 30, 0)
-            self.__parrots.append(parrot)
+            for j in range(4):
+                parrot = Parrot(sprite, start + i * 30, 10 + j * 30)
+                self.__parrots.append(parrot)
     
     def Render(self, renderer):
         # Draw all parrots with current offset
@@ -85,3 +104,14 @@ class ParrotHandler(GameObject):
         self.__tick += delta
         self.__offset_x = math.sin(self.__tick) * MAX_OFFSET
         self.__offset_y = self.__tick / APPROACH_RATE
+
+    def TestCollision(self, bullet_x, bullet_y):
+        should_delete = []
+
+        for parrot in self.__parrots:
+            if (parrot.TestCollision(bullet_x, bullet_y)):
+                should_delete.append(parrot)
+        
+        for parrot in should_delete:
+            self.__parrots.remove(parrot)
+        return len(should_delete) > 0

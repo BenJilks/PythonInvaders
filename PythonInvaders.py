@@ -17,14 +17,25 @@ def main():
     # Load objects
     player = Player(player_sprite, WIDTH, HEIGHT)
     parrots = ParrotHandler(parrot_sprite, WIDTH, HEIGHT)
-    objects = [player, parrots]
+    window.AddObject(player)
+    window.AddObject(parrots)
 
+    bullets = []
     while window.IsRunning():
-        # Do better
-        for obj in objects:
-            obj.Render(renderer)
-            obj.Update(0.1)
+        if player.ShouldFire():
+            bullets.append([player.pos[0], player.pos[1]])
         
+        bullets_hit = []
+        for bullet in bullets:
+            bullet[1] -= 0.01
+            if parrots.TestCollision(bullet[0], bullet[1]) or bullet[1] <= 0:
+                bullets_hit.append(bullet)
+            else:
+                print(int(bullet[0]), int(bullet[1]))
+                renderer.SetPixel(int(bullet[0]), int(bullet[1]), 0, 255, 0)
+        
+        for bullet in bullets_hit:
+            bullets.remove(bullet)
         window.Update()
 
 if __name__ == '__main__':
